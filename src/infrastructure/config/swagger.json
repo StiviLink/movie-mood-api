@@ -1,0 +1,254 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API de recommandation de films",
+    "version": "1.0.0",
+    "description": "Une API qui recommande des films en fonction de la météo d'une ville"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api",
+      "description": "Serveur local"
+    }
+  ],
+  "paths": {
+    "/weather": {
+      "get": {
+        "summary": "Récupérer la météo d'une ville",
+        "description": "Retourne les conditions météorologiques actuelles pour une ville donnée.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "city",
+            "required": true,
+            "description": "Nom de la ville",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succès - Données météo retournées",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "coord": { "type": "object",
+                      "properties": {
+                        "lat": { "type": "number", "example": 48.8534 },
+                        "lon": { "type": "number", "example": 2.3488 }
+                      }
+                    },
+                    "weather": { "type": "object",
+                      "properties": {
+                        "id": { "type": "number", "example": 800 },
+                        "main": { "type": "string", "example": "Clear" },
+                        "description": { "type": "string", "example": "clear sky" },
+                        "icon": { "type": "string", "example": "01d" }
+                      }
+                    },
+                    "base": { "type": "string", "example": "stations" },
+                    "main": { "type": "object",
+                      "properties": {
+                        "temp": { "type": "number", "example": 282.55 },
+                        "feels_like": { "type": "number", "example": 281.26 },
+                        "temp_min": { "type": "number", "example": 280.37 },
+                        "temp_max": { "type": "number", "example": 284.26 },
+                        "pressure": { "type": "number", "example": 1012 },
+                        "humidity": { "type": "number", "example": 100 }
+                      }
+                    },
+                    "visibility": { "type": "number", "example": 10000 },
+                    "wind": { "type": "object",
+                      "properties": {
+                        "speed": { "type": "number", "example": 4.1 },
+                        "deg": { "type": "number", "example": 180 }
+                      }
+                    },
+                    "clouds": { "type": "object",
+                      "properties": {
+                        "all": { "type": "number", "example": 1 }
+                      }},
+                    "dt": { "type": "number", "example": 1656000000 },
+                    "sys": { "type": "object",
+                      "properties": {
+                        "type": { "type": "number", "example": 1 },
+                        "id": { "type": "number", "example": 2057 },
+                        "country": { "type": "string", "example": "FR" },
+                        "sunrise": { "type": "number", "example": 1655993044 },
+                        "sunset": { "type": "number", "example": 1656040079 }
+                      }
+                    },
+                    "timezone": { "type": "number", "example": 3600 },
+                    "id": { "type": "number", "example": 2988507 },
+                    "name": { "type": "string", "example": "Paris" },
+                    "cod": { "type": "number", "example": 200 }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requête invalide"
+          }
+        }
+      }
+    },
+    "/movies/recommend/{city}": {
+      "get": {
+        "summary": "Obtenir une recommandation de film en fonction de la météo",
+        "description": "Retourne un film suggéré en fonction du type de météo.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "city",
+            "required": true,
+            "description": "Nom de la ville pour laquelle vous souhaitez obtenir des recommandations de film",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "description": "Page de la recommandation de film",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succès - Films recommandés retournés",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "weatherMovieMapped": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "example": "Thunderstorm"
+                        },
+                        "genres": {
+                          "type": "array",
+                          "items": {
+                            "type": "number",
+                            "example": 28
+                          }
+                        },
+                        "description": {
+                          "type": "string",
+                          "example": "Thunderstorms: Strong"
+                        },
+                        "reason": {
+                          "type": "string",
+                          "example": "The atmosphere is dark and suspenseful."
+                        }
+                      }
+                    },
+                    "movies": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "page": {
+                            "type": "number",
+                            "example": 1
+                          },
+                          "results": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "adult": {
+                                  "type": "boolean",
+                                  "example": false
+                                },
+                                "backdrop_path": {
+                                  "type": "string",
+                                  "example": "https://image.tmdb.org/t/p/w500/khsjha27hbs"
+                                },
+                                "genre_ids": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "number",
+                                    "example": 28
+                                  }
+                                },
+                                "id": {
+                                  "type": "number",
+                                  "example": 238
+                                },
+                                "original_language": {
+                                  "type": "string",
+                                  "example": "en"
+                                },
+                                "original_title": {
+                                  "type": "string",
+                                  "example": "The Godfather"
+                                },
+                                "overview": {
+                                  "type": "string",
+                                  "example": "An organized crime dynasty's aging patriarch transfers control of his clandestine empire to his reluctant son."
+                                },
+                                "popularity": {
+                                  "type": "number",
+                                  "example": 100
+                                },
+                                "poster_path": {
+                                  "type": "string",
+                                  "example": "https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolE1MX2cjb.jpg"
+                                },
+                                "release_date": {
+                                  "type": "string",
+                                  "example": "1972-03-14"
+                                },
+                                "title": {
+                                  "type": "string",
+                                  "example": "The Godfather"
+                                },
+                                "video": {
+                                  "type": "boolean",
+                                  "example": false
+                                },
+                                "vote_average": {
+                                  "type": "number",
+                                  "example": 8.7
+                                },
+                                "vote_count": {
+                                  "type": "number",
+                                  "example": 1678
+                                }
+                              }
+                            }
+                          },
+                          "total_pages": {
+                            "type": "number",
+                            "example": 1
+                          },
+                          "total_results": {
+                            "type": "number",
+                            "example": 1
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ville invalide ou introuvable"
+          }
+        }
+      }
+    }
+  }
+}

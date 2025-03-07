@@ -1,0 +1,40 @@
+{
+  "name": "movie-mood-api",
+  "version": "1.0.0",
+  "description": "The api for mood movie by hexagonal structure",
+  "main": "dist/infrastructure/web/server.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "nodemon --exec node --no-warnings=ExperimentalWarning --loader ts-node/esm -r tsconfig-paths/register src/infrastructure/web/server.ts",
+    "pm2:start": "tsc && pm2 start dist/main.js --watch --name movie-mood-api",
+    "pm2:stop": "pm2 stop movie-mood-api",
+    "pm2:delete": "pm2 delete movie-mood-api",
+    "pm2:logs": "pm2 logs movie-mood-api"
+  },
+  "author": "Steve",
+  "license": "MIT",
+  "dependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.8",
+    "@types/redis": "^4.0.11",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
+    "axios": "^1.8.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-validator": "^7.2.1",
+    "nodemon": "^3.1.9",
+    "redis": "^4.7.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.8.2"
+  },
+  "devDependencies": {
+    "pm2": "^5.4.3"
+  }
+}
